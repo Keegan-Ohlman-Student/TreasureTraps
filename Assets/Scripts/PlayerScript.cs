@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class PlayerScript : MonoBehaviour
     private float speed = 5;
     public bool isMoving = false;
     private bool isFacing;
+    public bool canMove = false;
+    [SerializeField] private GameObject trapPrefab;
+    [SerializeField] private int trapCount = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,15 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleMovement();
+        HandleTrapPlacement();
+        HandleTrapPickup();
+    }
+
+    void HandleMovement()
+    {
+        if (!canMove) return;
+
         if (Input.anyKey)
         {
             if (Input.GetKey(KeyCode.D))
@@ -45,8 +58,6 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            
-
             if (Input.GetKey(KeyCode.S))
             {
                 myRigidBody.position += Vector2.down * speed * Time.deltaTime;
@@ -64,5 +75,42 @@ public class PlayerScript : MonoBehaviour
         {
             isMoving = false;
         }
+    }
+
+    void HandleTrapPlacement()
+    {
+        if (Input.GetKeyDown(KeyCode.T) && trapCount > 0)
+        {
+            Vector3 dropPos = transform.position;
+            GameObject newTrap = Instantiate(trapPrefab, dropPos, Quaternion.identity);
+
+            trapCount--;
+            newTrap.SetActive(true);
+        }
+    }
+
+    void HandleTrapPickup()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.5f);
+
+            foreach(Collider2D collider in colliders)
+            {
+                TrapScript trap = collider.GetComponent<TrapScript>();
+
+                if (trap != null && trap.CanBePickedUp())
+                {
+                    AddTrap(trap.GetTrapAmount());
+                    Destroy(trap.gameObject);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void AddTrap(int amount)
+    {
+        trapCount+= amount;
     }
 }

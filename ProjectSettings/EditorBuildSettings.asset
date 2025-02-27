@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleMenu.unity
     guid: e355398f46d4f284e913839c54a2c87c
+  - enabled: 1
+    path: Assets/Scenes/ControlsMenu.unity
+    guid: 99788b131687c814eab12a8a41902a03
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

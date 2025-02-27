@@ -10,7 +10,7 @@ public class CollectibleScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        s = FindObjectOfType<Score>();
     }
 
     // Update is called once per frame

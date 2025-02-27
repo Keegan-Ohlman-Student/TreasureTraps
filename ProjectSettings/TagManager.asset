@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collectibles
+  - BackButton
+  - MenuButton
+  - StartButton
+  - ControlsButton
+  - Collectible
+  - Trap
+  - Enemy
   layers:
   - Default
   - TransparentFX
