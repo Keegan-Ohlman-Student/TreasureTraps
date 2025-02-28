@@ -7,6 +7,7 @@ using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 using Pathfinding;
+using UnityEditor.Experimental.GraphView;
 
 public class GenerateMaze : MonoBehaviour
 {
@@ -59,6 +60,8 @@ public class GenerateMaze : MonoBehaviour
 
         InitializeMaze(width, height);
         CreateMaze();
+
+        ConfigurePathFindingGrid();
     }
 
     public void InitializeMaze(int width, int height)
@@ -241,12 +244,9 @@ public class GenerateMaze : MonoBehaviour
 
         Reset();
         
-
         stack.Push(rooms[0, 0]);
        
         StartCoroutine(Coroutine_Generate());
-
-        ConfigurePathFindingGrid();
     }
 
     IEnumerator Coroutine_Generate()
@@ -268,8 +268,6 @@ public class GenerateMaze : MonoBehaviour
 
         generating = false;
 
-        ConfigurePathFindingGrid();
-
         if (collectibleSpawner != null)
         {
             collectibleSpawner.SpawnCollectibles(rooms);
@@ -279,7 +277,9 @@ public class GenerateMaze : MonoBehaviour
         if ( player != null)
         {
             player.canMove = true;
-        }   
+        }
+
+        ConfigurePathFindingGrid();
 
         if (readyText != null)
         {
@@ -307,15 +307,38 @@ public class GenerateMaze : MonoBehaviour
     void ConfigurePathFindingGrid()
     {
         AstarPath astarPath = AstarPath.active;
-
         GridGraph gridGraph = astarPath.data.gridGraph;
 
+        gridGraph.nodeSize = Mathf.Min(roomWidth, roomHeight);
         gridGraph.width = numX;
         gridGraph.depth = numY;
 
-        gridGraph.nodeSize = roomWidth;
+        Vector3 mazeBottomLeft = new Vector3(0, 0, 0);
+        Vector3 mazeCenter = mazeBottomLeft + new Vector3((numX - 1) * roomWidth / 2, (numY - 1) * roomHeight / 2, 0);
+
+        gridGraph.center = mazeCenter;
+        astarPath.Scan();
+
+        for (int i = 0; i < numX; i++)
+        {
+            for (int j = 0; j < numY; j++)
+            {
+                Vector3 nodePosition = new Vector3(i * roomWidth, j * roomHeight, 0);
+                GridNodeBase node = gridGraph.GetNode(i, j);
+
+                if (node == null)
+                {
+                    Debug.LogError($"Node at pos ({i}, {j}) is null!");
+                    continue;
+                }
+
+                bool isWalkable = true;
+                node.Walkable = isWalkable;
+            }
+        }
 
         astarPath.Scan();
+        Debug.Log("Graph successfully updated and rescanned!");
     }
 
     private void Update()
