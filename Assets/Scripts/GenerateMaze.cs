@@ -309,21 +309,32 @@ public class GenerateMaze : MonoBehaviour
         AstarPath astarPath = AstarPath.active;
         GridGraph gridGraph = astarPath.data.gridGraph;
 
+        if (gridGraph == null)
+        {
+            Debug.LogError("gridGraph is null!");
+        }
+
         gridGraph.nodeSize = Mathf.Min(roomWidth, roomHeight);
         gridGraph.width = numX;
         gridGraph.depth = numY;
 
-        Vector3 mazeBottomLeft = new Vector3(0, 0, 0);
-        Vector3 mazeCenter = mazeBottomLeft + new Vector3((numX - 1) * roomWidth / 2, (numY - 1) * roomHeight / 2, 0);
+        gridGraph.UpdateSizeFromWidthDepth();
+
+        Debug.Log($"Setting grid size: width={numX}, depth={numY}, nodeSize={gridGraph.nodeSize}");
+
+        float mazeWidth = (numX - 1) * gridGraph.nodeSize;
+        float mazeHeight = (numY - 1) * gridGraph.nodeSize;
+        Vector3 mazeCenter = new Vector3(mazeWidth * 0.5f, mazeHeight * 0.5f, 0f);
 
         gridGraph.center = mazeCenter;
+
+        gridGraph.RelocateNodes(mazeCenter, Quaternion.identity, gridGraph.nodeSize);
         astarPath.Scan();
 
         for (int i = 0; i < numX; i++)
         {
             for (int j = 0; j < numY; j++)
             {
-                Vector3 nodePosition = new Vector3(i * roomWidth, j * roomHeight, 0);
                 GridNodeBase node = gridGraph.GetNode(i, j);
 
                 if (node == null)
@@ -338,7 +349,6 @@ public class GenerateMaze : MonoBehaviour
         }
 
         astarPath.Scan();
-        Debug.Log("Graph successfully updated and rescanned!");
     }
 
     private void Update()
