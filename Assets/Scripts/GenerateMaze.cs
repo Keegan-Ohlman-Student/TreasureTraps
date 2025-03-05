@@ -309,42 +309,33 @@ public class GenerateMaze : MonoBehaviour
         AstarPath astarPath = AstarPath.active;
         GridGraph gridGraph = astarPath.data.gridGraph;
 
-        if (gridGraph == null)
-        {
-            Debug.LogError("gridGraph is null!");
-        }
-
         gridGraph.nodeSize = Mathf.Min(roomWidth, roomHeight);
         gridGraph.width = numX;
         gridGraph.depth = numY;
-
-        gridGraph.UpdateSizeFromWidthDepth();
 
         Debug.Log($"Setting grid size: width={numX}, depth={numY}, nodeSize={gridGraph.nodeSize}");
 
         float mazeWidth = (numX - 1) * gridGraph.nodeSize;
         float mazeHeight = (numY - 1) * gridGraph.nodeSize;
-        Vector3 mazeCenter = new Vector3(mazeWidth * 0.5f, mazeHeight * 0.5f, 0f);
+        
+        Vector3 firstRoomPos = rooms[0, 0].transform.position;
+        Vector3 lastRoomPos = rooms[numX - 1, numY - 1].transform.position;
+        Vector3 mazeCenter = (firstRoomPos + lastRoomPos) * 0.5f;
 
-        gridGraph.center = mazeCenter;
+        gridGraph.center = Vector3.zero;
 
-        gridGraph.RelocateNodes(mazeCenter, Quaternion.identity, gridGraph.nodeSize);
-        astarPath.Scan();
+        gridGraph.RelocateNodes(Vector3.zero, Quaternion.identity, gridGraph.nodeSize);
 
         for (int i = 0; i < numX; i++)
         {
             for (int j = 0; j < numY; j++)
             {
-                GridNodeBase node = gridGraph.GetNode(i, j);
-
-                if (node == null)
+                if (rooms[i, j] == null)
                 {
-                    Debug.LogError($"Node at pos ({i}, {j}) is null!");
                     continue;
                 }
 
-                bool isWalkable = true;
-                node.Walkable = isWalkable;
+                Vector3 roomPosition = rooms[i, j].transform.position;
             }
         }
 
