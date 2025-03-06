@@ -7,43 +7,29 @@ public class EnemyAI : MonoBehaviour
 {
     public Transform target;
     private Seeker seeker;
-    private Path path;
-    private int currentWayPoint = 0;
+    private AIPath aiPath;
     public float speed = 3f;
 
     // Start is called before the first frame update
     void Start()
     {
         seeker = GetComponent<Seeker>();
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
+        aiPath = GetComponent<AIPath>();
+
+        InvokeRepeating(nameof(UpdatePath), 0f, 0.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (path == null)
-        {
-            return;
-        }
-
-        if (currentWayPoint < path.vectorPath.Count)
-        {
-            Vector3 direction = (path.vectorPath[currentWayPoint] - transform.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
-
-            if (Vector3.Distance(transform.position, path.vectorPath[currentWayPoint]) < 0.1f) 
-            {
-                currentWayPoint++;
-            }
-        }
+        
     }
 
-    void OnPathComplete(Path p)
+    void UpdatePath()
     {
-        if (!p.error)
+        if (seeker.IsDone())
         {
-            path = p;
-            currentWayPoint = 0;
+            seeker.StartPath(transform.position, target.position);
         }
     }
 }

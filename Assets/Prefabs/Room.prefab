@@ -68,9 +68,9 @@ GameObject:
   - component: {fileID: 4811932510395897068}
   - component: {fileID: 3084209682141202369}
   - component: {fileID: 3247574405097851864}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomLeft
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,9 +199,9 @@ GameObject:
   - component: {fileID: 4505980310554496147}
   - component: {fileID: 828814987977028625}
   - component: {fileID: 8302393799644252295}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,9 +330,9 @@ GameObject:
   - component: {fileID: 874608830072527908}
   - component: {fileID: 4669331354369261533}
   - component: {fileID: 6842601775691331317}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,9 +461,9 @@ GameObject:
   - component: {fileID: 5774828876024050183}
   - component: {fileID: 6533316974778070653}
   - component: {fileID: 6024629808329597920}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomRight
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -592,9 +592,9 @@ GameObject:
   - component: {fileID: 4832022945916893907}
   - component: {fileID: 8820911627404476422}
   - component: {fileID: 5568345351142032795}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottom
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -723,9 +723,9 @@ GameObject:
   - component: {fileID: 957200998647761903}
   - component: {fileID: 2450350413268724876}
   - component: {fileID: 159497218911400593}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,9 +854,9 @@ GameObject:
   - component: {fileID: 7461971039209363179}
   - component: {fileID: 2211285986195264750}
   - component: {fileID: 6153135704877631059}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopRight
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1069,9 +1069,9 @@ GameObject:
   - component: {fileID: 7703421283060373912}
   - component: {fileID: 2360125062511138884}
   - component: {fileID: 336447851643054709}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopLeft
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

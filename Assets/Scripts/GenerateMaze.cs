@@ -309,11 +309,7 @@ public class GenerateMaze : MonoBehaviour
         AstarPath astarPath = AstarPath.active;
         GridGraph gridGraph = astarPath.data.gridGraph;
 
-        gridGraph.nodeSize = Mathf.Min(roomWidth, roomHeight);
-        gridGraph.width = numX;
-        gridGraph.depth = numY;
-
-        Debug.Log($"Setting grid size: width={numX}, depth={numY}, nodeSize={gridGraph.nodeSize}");
+        gridGraph.SetDimensions(numX, numY, Mathf.Min(roomWidth, roomHeight));
 
         float mazeWidth = (numX - 1) * gridGraph.nodeSize;
         float mazeHeight = (numY - 1) * gridGraph.nodeSize;
@@ -321,35 +317,21 @@ public class GenerateMaze : MonoBehaviour
         Vector3 firstRoomPos = rooms[0, 0].transform.position;
         Vector3 lastRoomPos = rooms[numX - 1, numY - 1].transform.position;
         Vector3 mazeCenter = (firstRoomPos + lastRoomPos) * 0.5f;
+        gridGraph.center = mazeCenter;
 
-        gridGraph.center = Vector3.zero;
+        astarPath.Scan();
 
-        gridGraph.RelocateNodes(Vector3.zero, Quaternion.identity, gridGraph.nodeSize);
-
-        for (int i = 0; i < numX; i++)
+        foreach (GraphNode node in gridGraph.nodes)
         {
-            for (int j = 0; j < numY; j++)
-            {
-                if (rooms[i, j] == null)
-                {
-                    continue;
-                }
-
-                Vector3 roomPosition = rooms[i, j].transform.position;
-            }
+            node.Walkable = true;
         }
 
+        AstarPath.active.FloodFill();
         astarPath.Scan();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!generating)
-            {
-                CreateMaze();
-            }
-        }
+        
     }
 }
