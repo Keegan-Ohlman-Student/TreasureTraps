@@ -24,8 +24,7 @@ public class CollectibleScript : MonoBehaviour
         if (collision.gameObject.name == "Player")
         {
             s.score += scoreValue;
-        }
-
-        gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        } 
     }
 }

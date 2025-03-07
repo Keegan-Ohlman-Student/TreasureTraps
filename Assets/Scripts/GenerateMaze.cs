@@ -310,24 +310,45 @@ public class GenerateMaze : MonoBehaviour
         GridGraph gridGraph = astarPath.data.gridGraph;
 
         gridGraph.SetDimensions(numX, numY, Mathf.Min(roomWidth, roomHeight));
-
-        float mazeWidth = (numX - 1) * gridGraph.nodeSize;
-        float mazeHeight = (numY - 1) * gridGraph.nodeSize;
         
         Vector3 firstRoomPos = rooms[0, 0].transform.position;
         Vector3 lastRoomPos = rooms[numX - 1, numY - 1].transform.position;
         Vector3 mazeCenter = (firstRoomPos + lastRoomPos) * 0.5f;
         gridGraph.center = mazeCenter;
 
+
         astarPath.Scan();
 
         foreach (GraphNode node in gridGraph.nodes)
         {
-            node.Walkable = true;
+            List<GraphNode> connectionsToRemove = new List<GraphNode>();
+
+            node.GetConnections(connectedNode =>
+            {
+                Vector3 startPos = (Vector3)node.position;
+                Vector3 endPos = (Vector3)connectedNode.position;
+
+                //Perform linecast to detect walls between nodes
+                RaycastHit2D hit = Physics2D.Linecast(startPos, endPos, LayerMask.GetMask("Wall"));
+                if (hit.collider != null)
+                {
+                    connectionsToRemove.Add(connectedNode);
+                    Debug.Log($"Connection between node {startPos} and node {endPos} is blocked by a wall");
+                }
+            });
+
+            foreach (var blockedNode in connectionsToRemove)
+            {
+                node.RemoveConnection(blockedNode);
+                blockedNode.RemoveConnection(node);
+                Debug.Log($"Removed blocked connection between node {node.position} and node {blockedNode.position}");
+            }
         }
 
-        AstarPath.active.FloodFill();
+        astarPath.FloodFill();
         astarPath.Scan();
+
+        gridGraph.Scan();
     }
 
     private void Update()
