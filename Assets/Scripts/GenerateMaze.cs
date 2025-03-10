@@ -316,39 +316,48 @@ public class GenerateMaze : MonoBehaviour
         Vector3 mazeCenter = (firstRoomPos + lastRoomPos) * 0.5f;
         gridGraph.center = mazeCenter;
 
-
         astarPath.Scan();
+
+        List<(GraphNode, GraphNode)> connectionsToRemove = new List<(GraphNode, GraphNode)>();
 
         foreach (GraphNode node in gridGraph.nodes)
         {
-            List<GraphNode> connectionsToRemove = new List<GraphNode>();
-
             node.GetConnections(connectedNode =>
             {
                 Vector3 startPos = (Vector3)node.position;
                 Vector3 endPos = (Vector3)connectedNode.position;
 
                 //Perform linecast to detect walls between nodes
-                RaycastHit2D hit = Physics2D.Linecast(startPos, endPos, LayerMask.GetMask("Wall"));
-                if (hit.collider != null)
+                if (Physics2D.Linecast(startPos, endPos, LayerMask.GetMask("Wall")))
                 {
-                    connectionsToRemove.Add(connectedNode);
-                    Debug.Log($"Connection between node {startPos} and node {endPos} is blocked by a wall");
+                    connectionsToRemove.Add((node, connectedNode));
+                    Debug.Log($"Marking connection for removal between {startPos} and {endPos}");
                 }
             });
-
-            foreach (var blockedNode in connectionsToRemove)
-            {
-                node.RemoveConnection(blockedNode);
-                blockedNode.RemoveConnection(node);
-                Debug.Log($"Removed blocked connection between node {node.position} and node {blockedNode.position}");
-            }
         }
 
-        astarPath.FloodFill();
-        astarPath.Scan();
+        //Remove the connections
+        foreach (var (nodeA, nodeB) in connectionsToRemove)
+        {
+            nodeA.RemoveConnection(nodeB);
+            nodeB.RemoveConnection(nodeA);
+            Debug.Log($"Removed connection between {nodeA.position} and {nodeB.position}");
+        }
 
-        gridGraph.Scan();
+        AstarPath.active.FloodFill();
+        AstarPath.active.Scan();
+        AstarPath.active.FlushGraphUpdates();
+
+        foreach (GraphNode node in gridGraph.nodes)
+        {
+            node.GetConnections(connectedNode =>
+            {
+                Debug.Log($"(AFTER UPDATE) Node at {node.position} is still connected to {connectedNode.position}");
+            });
+        }
+
+
+        
     }
 
     private void Update()
