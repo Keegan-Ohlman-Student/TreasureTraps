@@ -418,8 +418,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 785cffff
-      m_LastClickedID: -41864
+      m_SelectedIDs: 
+      m_LastClickedID: 0
       m_ExpandedIDs: 02fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -920,9 +920,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 16.610863, y: 22.197206, z: 0.2697096}
+    m_Target: {x: 11.224697, y: 15.8638735, z: 0.5843218}
     speed: 2
-    m_Value: {x: 16.610863, y: 22.197206, z: 0.2697096}
+    m_Value: {x: 11.224697, y: 15.8638735, z: 0.5843218}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -972,9 +972,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 14.579722
+    m_Target: 13.475447
     speed: 2
-    m_Value: 14.579722
+    m_Value: 13.475447
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1186,8 +1186,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 70}
-    m_SelectedIDs: 0a680000
-    m_LastClickedID: 26634
+    m_SelectedIDs: 2c690000
+    m_LastClickedID: 26924
     m_ExpandedIDs: 00000000d467000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1204,7 +1204,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 10}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -1241,9 +1241,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: f4650000
+    m_LastClickedInstanceID: 26100
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000a6640000aa640000aa7e00005e6400007864000006670000028b0000806600002c66000000650000f0870000ec64000068650000de660000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1346,7 +1346,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 26074
+  m_LastSelectedObjectID: 26100
 --- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52

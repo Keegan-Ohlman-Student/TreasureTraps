@@ -904,7 +904,7 @@ Transform:
   m_GameObject: {fileID: 720763792}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 38.2694, y: 27.7702, z: 0}
+  m_LocalPosition: {x: 22.01, y: 14.98, z: 0}
   m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,6 +1004,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 2013113130}
   speed: 3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  pathUpdateInterval: 0.5
 --- !u!50 &720763797
 Rigidbody2D:
   serializedVersion: 4

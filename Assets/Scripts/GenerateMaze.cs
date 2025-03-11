@@ -317,47 +317,7 @@ public class GenerateMaze : MonoBehaviour
         gridGraph.center = mazeCenter;
 
         astarPath.Scan();
-
-        List<(GraphNode, GraphNode)> connectionsToRemove = new List<(GraphNode, GraphNode)>();
-
-        foreach (GraphNode node in gridGraph.nodes)
-        {
-            node.GetConnections(connectedNode =>
-            {
-                Vector3 startPos = (Vector3)node.position;
-                Vector3 endPos = (Vector3)connectedNode.position;
-
-                //Perform linecast to detect walls between nodes
-                if (Physics2D.Linecast(startPos, endPos, LayerMask.GetMask("Wall")))
-                {
-                    connectionsToRemove.Add((node, connectedNode));
-                    Debug.Log($"Marking connection for removal between {startPos} and {endPos}");
-                }
-            });
-        }
-
-        //Remove the connections
-        foreach (var (nodeA, nodeB) in connectionsToRemove)
-        {
-            nodeA.RemoveConnection(nodeB);
-            nodeB.RemoveConnection(nodeA);
-            Debug.Log($"Removed connection between {nodeA.position} and {nodeB.position}");
-        }
-
-        AstarPath.active.FloodFill();
         AstarPath.active.Scan();
-        AstarPath.active.FlushGraphUpdates();
-
-        foreach (GraphNode node in gridGraph.nodes)
-        {
-            node.GetConnections(connectedNode =>
-            {
-                Debug.Log($"(AFTER UPDATE) Node at {node.position} is still connected to {connectedNode.position}");
-            });
-        }
-
-
-        
     }
 
     private void Update()
