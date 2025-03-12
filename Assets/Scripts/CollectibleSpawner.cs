@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class CollectibleSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject collectiblePrefab;
-    [SerializeField] int collectibleCount = 25;
-    private Room[,] rooms;
+    [SerializeField] private GameObject collectiblePrefab;
+    [SerializeField] private float collectibleDensity = 0.5f;
 
-    public void SpawnCollectibles(Room[,] generatedRooms)
+    public void SpawnCollectibles(Room[,] rooms)
     {
-        rooms = generatedRooms;
+        if (collectiblePrefab == null || rooms == null) return;
+
         List<Room> avaibleRooms = new List<Room>();
+        int mazeWidth = rooms.GetLength(0);
+        int mazeHeight = rooms.GetLength(1);
+        int totalRooms = mazeWidth * mazeHeight;
 
         //Get valid rooms to spawn collectibles
         foreach (Room room in rooms)
@@ -22,20 +25,16 @@ public class CollectibleSpawner : MonoBehaviour
             }
         }
 
-        //Shuffle rooms to randomize selection
-        for (int i = 0; i < avaibleRooms.Count; i++)
-        {
-            int randIndex = Random.Range(i, avaibleRooms.Count);
-            Room temp = avaibleRooms[i];
-            avaibleRooms[i] = avaibleRooms[randIndex];
-            avaibleRooms[randIndex] = temp;
-        }
+        int numOfCollectibles = Mathf.Clamp(Mathf.RoundToInt(totalRooms * collectibleDensity), 1, 250);
 
-        //Spawn collectibles in the first few rooms from the shuffled list
-        for (int i = 0; i < Mathf.Min(collectibleCount, avaibleRooms.Count); i++)
+        for (int i = 0; i < numOfCollectibles && avaibleRooms.Count > 0; i++)
         {
-            Vector3 spawnPos = avaibleRooms[i].transform.position;
+            int index = Random.Range(0, avaibleRooms.Count);
+            Room selectedRoom = avaibleRooms[index];
+            Vector3 spawnPos = selectedRoom.transform.position;
+
             Instantiate(collectiblePrefab, spawnPos, Quaternion.identity);
+            avaibleRooms.RemoveAt(index);
         }
     }
 }

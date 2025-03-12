@@ -16,6 +16,7 @@ public class GenerateMaze : MonoBehaviour
     [SerializeField] InputField heightInput;
     [SerializeField] Button generateButton;
     [SerializeField] CollectibleSpawner collectibleSpawner;
+    [SerializeField] EnemySpawner enemySpawner;
     [SerializeField] private Text readyText;
 
     // The grid
@@ -268,12 +269,23 @@ public class GenerateMaze : MonoBehaviour
 
         generating = false;
 
+        int mazeWidth = rooms.GetLength(0);
+        int mazeHeight = rooms.GetLength(1);
+
+        PlayerScript player = FindObjectOfType<PlayerScript>();
+
         if (collectibleSpawner != null)
         {
             collectibleSpawner.SpawnCollectibles(rooms);
         }
 
-        PlayerScript player = FindObjectOfType<PlayerScript>();
+        if (enemySpawner != null)
+        {
+            Vector3 playerStartPos = player.transform.position;
+            enemySpawner.SpawnEnemies(rooms, playerStartPos);
+        }
+
+        
         if ( player != null)
         {
             player.canMove = true;

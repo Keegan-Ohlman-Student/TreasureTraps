@@ -37,16 +37,6 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        // If the enemy reaches the target node, pick a new random node (for random movement)
-        if (nextNode != null && Vector3.Distance(transform.position, (Vector3)nextNode.position) < 1f)
-        {
-            // If we're not chasing and not moving randomly, choose a new random node
-            if (!isChasing && !isMovingRandom)
-            {
-                PickRandomNode();  // Choose a new target node
-            }
-        }
-
         // If the enemy can see the player, switch to chasing the player
         if (CanSeePlayer())
         {
@@ -57,13 +47,19 @@ public class EnemyAI : MonoBehaviour
                 SetPathToPlayer();  // Set path to player
             }
         }
-        else if (!CanSeePlayer() && !isMovingRandom)
+        else
         {
             // If not chasing the player, follow the random node path
-            if (!isChasing && !isMovingRandom)
+            if (isChasing)
             {
+                isChasing = false;
                 StartRandomMovement();
             }
+        }
+
+        if (isMovingRandom && Vector3.Distance(transform.position, (Vector3)nextNode.position) < 1f)
+        {
+            PickRandomNode();
         }
     }
 
@@ -87,11 +83,15 @@ public class EnemyAI : MonoBehaviour
             InitializeWalkableNodes();  // If no nodes, reinitialize
         }
 
-        // Choose a random node
-        nextNode = walkableNodes[Random.Range(0, walkableNodes.Count)];
-        isMovingRandom = true;
+        GraphNode chosenNode;
 
-        // Start pathfinding to the new node
+        do
+        {
+            chosenNode = walkableNodes[Random.Range(0, walkableNodes.Count)];
+        } while (IsBlockedByWalls(chosenNode));
+
+        nextNode = chosenNode;
+        isMovingRandom = true;
         seeker.StartPath(transform.position, (Vector3)nextNode.position);
     }
 
@@ -149,16 +149,23 @@ public class EnemyAI : MonoBehaviour
                 SetPathToPlayer();
             }
             // If the enemy isn't chasing the player, start random movement immediately
-            else if (!isChasing && !isMovingRandom)
+            else
             {
-                StartRandomMovement();
-            }
-            // If the player is not seen, and the enemy has already been moving randomly, just continue with random movement
-            else if (!isChasing && isMovingRandom)
-            {
-                // Continue moving randomly even if the player is lost
-                seeker.StartPath(transform.position, (Vector3)nextNode.position);
+                if (!isMovingRandom)
+                {
+                    StartRandomMovement();
+                }
+
+                else
+                {
+                    seeker.StartPath(transform.position, (Vector3)nextNode.position);
+                }
             }
         }
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
     }
 }

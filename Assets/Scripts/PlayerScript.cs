@@ -12,7 +12,12 @@ public class PlayerScript : MonoBehaviour
     private bool isFacing;
     public bool canMove = false;
     [SerializeField] private GameObject trapPrefab;
-    [SerializeField] private int trapCount = 3;
+    [SerializeField] private int trapCount = 5;
+
+    public int currentHealth = 3;
+    public int maxHealth = 2;
+
+    [SerializeField] private UnityEngine.UI.Text healthText;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +31,11 @@ public class PlayerScript : MonoBehaviour
         HandleMovement();
         HandleTrapPlacement();
         HandleTrapPickup();
+
+        if (healthText != null)
+        {
+            healthText.text = "Health: " + currentHealth;
+        }
     }
 
     void HandleMovement()
@@ -112,5 +122,20 @@ public class PlayerScript : MonoBehaviour
     public void AddTrap(int amount)
     {
         trapCount+= amount;
+    }
+
+    public void TakeDamage()
+    {
+        currentHealth--;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        canMove = false;
     }
 }
