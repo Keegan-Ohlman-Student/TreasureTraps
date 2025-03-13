@@ -2,12 +2,9 @@ using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 using Pathfinding;
-using UnityEditor.Experimental.GraphView;
 
 public class GenerateMaze : MonoBehaviour
 {

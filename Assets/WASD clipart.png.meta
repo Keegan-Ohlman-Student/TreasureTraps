@@ -164,7 +164,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WASD clipart_0: -2037540055654106057
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
