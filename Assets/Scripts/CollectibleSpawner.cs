@@ -7,6 +7,7 @@ public class CollectibleSpawner : MonoBehaviour
     [SerializeField] private GameObject collectiblePrefab;
     [SerializeField] private float collectibleDensity = 0.5f;
 
+
     public void SpawnCollectibles(Room[,] rooms)
     {
         if (collectiblePrefab == null || rooms == null) return;
@@ -34,6 +35,7 @@ public class CollectibleSpawner : MonoBehaviour
             Vector3 spawnPos = selectedRoom.transform.position;
 
             Instantiate(collectiblePrefab, spawnPos, Quaternion.identity);
+            GameManager.instance.RegisteredCollectible();
             avaibleRooms.RemoveAt(index);
         }
     }

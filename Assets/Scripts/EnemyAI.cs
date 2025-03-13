@@ -168,4 +168,16 @@ public class EnemyAI : MonoBehaviour
     {
         target = newTarget;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            PlayerScript player = collision.collider.GetComponent<PlayerScript>();
+            if (player != null)
+            {
+                player.TakeDamage();
+            }
+        }
+    }
 }

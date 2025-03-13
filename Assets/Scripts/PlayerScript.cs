@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerScript : MonoBehaviour
 
     public int currentHealth = 3;
     public int maxHealth = 2;
+    private bool isInvulerable = false;
+    [SerializeField] private float invulnerabilityDuration = 1f;
 
     [SerializeField] private UnityEngine.UI.Text healthText;
 
@@ -126,16 +129,31 @@ public class PlayerScript : MonoBehaviour
 
     public void TakeDamage()
     {
-        currentHealth--;
-
-        if (currentHealth <= 0)
+        if (!isInvulerable)
         {
-            Die();
+            currentHealth--;
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                StartCoroutine(InvulnerabilityCooldown());
+            }
         }
     }
 
     private void Die()
     {
         canMove = false;
+        SceneManager.LoadScene("DeathScreen");
+    }
+
+    private IEnumerator InvulnerabilityCooldown()
+    {
+        isInvulerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulerable = false;
     }
 }

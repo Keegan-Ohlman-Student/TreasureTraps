@@ -58,4 +58,28 @@ public class Room : MonoBehaviour
         dirflags[dir] = flag;
         SetActive(dir, flag);
     }
+
+    public void RemoveWallForExit()
+    {
+        List<Directions> availableWalls = new List<Directions>();
+
+        if (walls[Directions.TOP] != null) availableWalls.Add(Directions.TOP);
+        if (walls[Directions.RIGHT] != null) availableWalls.Add(Directions.RIGHT);
+        if (walls[Directions.BOTTOM] != null) availableWalls.Add(Directions.BOTTOM);
+        if (walls[Directions.LEFT] != null) availableWalls.Add(Directions.LEFT);
+
+
+        if (availableWalls.Count > 0)
+        {
+            Directions wallToRemove = availableWalls[Random.Range(0, availableWalls.Count)];
+            Destroy(walls[wallToRemove]);
+            walls[wallToRemove] = null;
+        }
+
+        GameObject exitTrigger = new GameObject("ExitTrigger");
+        exitTrigger.transform.position = transform.position;
+        BoxCollider2D collider = exitTrigger.AddComponent<BoxCollider2D>();
+        collider.isTrigger = true;
+        exitTrigger.AddComponent<ExitTrigger>();
+    }
 }

@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private List<string> sceneHistory = new List<string>();
 
+    private int totalCollectibles;
+    private int collected = 0;
+    private Room[,] rooms;
+
     private void Awake()
     {
         if (instance == null)
@@ -32,6 +36,8 @@ public class GameManager : MonoBehaviour
         {
             sceneHistory.Add(currentScene);
         }
+
+        StartCollectibles();
     }
 
     public void LoadScene(string sceneName)
@@ -142,5 +148,33 @@ public class GameManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+
+    public void RegisteredCollectible()
+    {
+        totalCollectibles++;
+    }
+
+    public void CollectibleCollected()
+    {
+        collected++;
+        if (collected >= totalCollectibles)
+        {
+            EndLevel();
+        }
+    }
+
+    private void EndLevel()
+    {
+        Debug.Log("All collectibles colected!");
+        SceneManager.LoadScene("WinScreen");
+    }
+
+    public void StartCollectibles()
+    {
+        totalCollectibles = FindObjectsOfType<CollectibleScript>().Length;
+        collected = 0;
+        Debug.Log("Total collectibles: " + totalCollectibles);
     }
 }
